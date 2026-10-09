@@ -9,7 +9,7 @@ import type { ResourceConfig } from "@/lib/admin-config";
 import { emptyForm, formToPayload, formatCell, rowToForm, type FormValues, type Row } from "@/lib/admin-form";
 
 const INPUT =
-  "w-full rounded-md border border-outline bg-surface-container/60 px-3 py-2 text-sm text-on-surface outline-none focus:border-primary/40";
+  "w-full rounded-md border border-outline bg-surface-container px-3 py-2 text-sm text-on-surface outline-none focus:border-primary/40";
 
 type Option = { value: string; label: string };
 

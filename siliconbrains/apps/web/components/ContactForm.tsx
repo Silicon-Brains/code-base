@@ -7,7 +7,7 @@ import { Icon } from "@/components/public/ui";
 import type { LeadPayload } from "@/lib/types";
 
 const PROJECT_TYPES = ["Web Application", "Android Application", "Both Web & Android", "Consulting"];
-const BUDGETS = ["Under $5,000", "$5,000 – $15,000", "$15,000 – $50,000", "$50,000+", "Not sure yet"];
+const BUDGETS = ["Under ₹15,000", "₹25,000 – ₹35,000", "₹55,000 – ₹100,000", "₹150,000+", "Not sure yet"];
 
 const INPUT_CLASS =
   "rounded-lg border border-outline bg-surface px-4 py-3 text-sm text-on-surface outline-none transition-colors placeholder:text-on-surface-variant/60 focus:border-primary/50";

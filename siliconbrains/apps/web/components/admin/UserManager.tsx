@@ -3,7 +3,7 @@
 import { useAuth } from '@clerk/nextjs';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { type AdminUser, displayName, initials } from '@/lib/users.js';
+import { type AdminUser, displayName, initials } from '@/lib/users';
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000';
 

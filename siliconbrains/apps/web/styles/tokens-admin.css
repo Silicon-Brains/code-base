@@ -1,0 +1,38 @@
+/* Admin theme — scoped to the (admin) route group. Neutral dashboard palette,
+   cleaner than the public marketing theme (which has a sage tint). */
+
+.theme-admin {
+  --color-background: #f6f7f6;
+  --color-surface: #ffffff;
+  --color-surface-container-low: #fbfcfb;
+  --color-surface-container: #ffffff;
+  --color-surface-container-high: #f1f3f1;
+  --color-surface-container-highest: #e6e9e6;
+
+  --color-on-surface: #1a1f1a;
+  --color-on-surface-variant: #6b7568;
+
+  --color-outline: #e8ebe7;
+  --color-outline-strong: #d3d8d2;
+
+  --color-primary: #1f4e3d;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #d9e8de;
+  --color-secondary: #2a6a4d;
+  --color-secondary-container: #e8f0e5;
+
+  --color-error: #c5383a;
+  --color-on-error: #ffffff;
+
+  /* Admin-specific tokens */
+  --admin-sidebar-bg: #ffffff;
+  --admin-sidebar-border: #eceeea;
+  --admin-header-bg: #f6f7f6;
+}
+
+/* Sidebar nav active pill + status dot colors */
+.theme-admin .admin-status-dot-ongoing     { background: #2a6a4d; }
+.theme-admin .admin-status-dot-completed   { background: #1f4e3d; }
+.theme-admin .admin-status-dot-planning    { background: #d9b869; }
+.theme-admin .admin-status-dot-on_hold     { background: #b8bcb5; }
+.theme-admin .admin-status-dot-cancelled   { background: #c5383a; }

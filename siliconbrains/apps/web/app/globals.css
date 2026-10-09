@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "../styles/tokens.css";
+@import "../styles/tokens-light.css";
+@import "../styles/tokens-admin.css";
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.theme-light body {
+  color-scheme: light;
+}

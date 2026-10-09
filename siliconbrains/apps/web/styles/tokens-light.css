@@ -1,0 +1,34 @@
+/* Light theme — scoped to the public marketing route group via .theme-light.
+   Overrides the same variable names as tokens.css, so every existing component
+   (Card, Button, Badge, Section) automatically picks up the light palette when
+   it renders inside a .theme-light ancestor. Admin and Portal remain dark. */
+
+.theme-light {
+  --color-background: #f5f7f2;
+  --color-surface: #ffffff;
+  --color-surface-container-low: #fafbf8;
+  --color-surface-container: #ffffff;
+  --color-surface-container-high: #f0f4ec;
+  --color-surface-container-highest: #e6efe3;
+
+  --color-on-surface: #14261e;
+  --color-on-surface-variant: #5f7168;
+
+  --color-outline: #e2e8de;
+  --color-outline-strong: #c8d5c6;
+
+  --color-primary: #1f4e3d;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #d9e8de;
+  --color-secondary: #2a6a4d;
+  --color-secondary-container: #e8f0e5;
+
+  --color-error: #c5383a;
+  --color-on-error: #ffffff;
+}
+
+/* Slightly deeper dividers between sections in light mode — the light
+   version of `border-outline/60` reads as almost invisible on #f5f7f2. */
+.theme-light .divide-outline > * + * {
+  border-color: rgba(20, 38, 30, 0.08);
+}

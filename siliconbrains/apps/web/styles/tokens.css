@@ -1,0 +1,16 @@
+:root {
+  --color-background: #051F20;
+  --color-surface: #001718;
+  --color-surface-container-low: #0B2B26;
+  --color-surface-container: #092324;
+  --color-surface-container-high: #163832;
+  --color-surface-container-highest: #235347;
+  --color-on-surface: #DFF3E3;
+  --color-on-surface-variant: #8EB69B;
+  --color-outline: rgba(142, 182, 155, 0.16);
+  --color-primary: #A9D2B6;
+  --color-on-primary: #051F20;
+  --color-primary-container: #8EB69B;
+  --color-secondary: #9FD1C1;
+  --color-error: #FFB4AB;
+}

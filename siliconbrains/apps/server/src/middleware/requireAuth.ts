@@ -1,0 +1,40 @@
+import type { Request, Response, NextFunction } from "express";
+import { clerkClient, verifyToken } from "@clerk/clerk-sdk-node";
+import { supabase } from "../lib/supabase.js";
+
+export interface AuthedRequest extends Request {
+  clerkUserId?: string;
+  profile?: { id: string; role: "admin" | "client"; clerk_user_id: string };
+}
+
+// Verifies the Clerk session token sent as `Authorization: Bearer <token>`
+// and attaches the matching Supabase `profiles` row to the request.
+export async function requireAuth(req: AuthedRequest, res: Response, next: NextFunction) {
+  try {
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.startsWith("Bearer ") ? authHeader.slice(7) : null;
+    if (!token) return res.status(401).json({ error: "Missing auth token" });
+
+    const payload = await verifyToken(token, {
+      secretKey: process.env.CLERK_SECRET_KEY,
+      issuer: null
+    });
+    const clerkUserId = payload.sub;
+    if (!clerkUserId) return res.status(401).json({ error: "Invalid token" });
+
+    const { data: profile, error } = await supabase
+      .from("profiles")
+      .select("id, role, clerk_user_id")
+      .eq("clerk_user_id", clerkUserId)
+      .single();
+
+    if (error || !profile) return res.status(403).json({ error: "No profile found for user" });
+
+    req.clerkUserId = clerkUserId;
+    req.profile = profile;
+    next();
+  } catch (err) {
+    console.error("requireAuth error:", err);
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+}

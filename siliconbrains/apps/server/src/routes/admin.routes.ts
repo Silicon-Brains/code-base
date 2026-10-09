@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabase.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { requireRole } from "../middleware/requireRole.js";
 import { blogAdminRouter } from './Admin.blog.routes.js';
+import { usersAdminRouter } from './Admin.users.routes.js';
 
 export const adminRouter = Router();
 
@@ -280,6 +281,7 @@ adminRouter.use(
   })
 );
 adminRouter.use('/blog-posts', blogAdminRouter);
+adminRouter.use('/users', usersAdminRouter);
 
 // ---------------------------------------------------------------------------
 // Leads — read + status only (no create/delete from admin)

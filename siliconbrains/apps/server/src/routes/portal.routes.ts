@@ -3,10 +3,12 @@ import { z } from "zod";
 import { supabase } from "../lib/supabase.js";
 import { requireAuth, type AuthedRequest } from "../middleware/requireAuth.js";
 import { requireRole } from "../middleware/requireRole.js";
+import { portalMessagesRouter } from './Portal.messages.routes.js';
 
 export const portalRouter = Router();
 
 portalRouter.use(requireAuth, requireRole("client"));
+portalRouter.use('/messages', portalMessagesRouter);
 
 const PROJECT_COLS = "id, title, current_phase, status_summary, progress_percent, created_at, updated_at";
 const MILESTONE_COLS = "id, title, due_date, status, notes, amount, currency, paid_at, paid_via";

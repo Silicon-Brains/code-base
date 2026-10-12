@@ -38,7 +38,7 @@ portalMessagesRouter.get('/:projectId', async (req, res) => {
     if (!(await ownsProject(req.params.projectId, profileIdOf(req)))) return res.status(404).json({ error: 'Not found' });
 
     const { data, error } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .select('id, client_project_id, sender_role, body, read_at, created_at')
       .eq('client_project_id', req.params.projectId)
       .order('created_at', { ascending: false })
@@ -60,7 +60,7 @@ portalMessagesRouter.post('/:projectId', async (req, res) => {
     if (!(await ownsProject(req.params.projectId, profileId))) return res.status(404).json({ error: 'Not found' });
 
     const { data, error } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .insert({
         client_project_id: req.params.projectId,
         sender_profile_id: profileId,
@@ -84,7 +84,7 @@ portalMessagesRouter.patch('/:projectId/read', async (req, res) => {
 
     const now = new Date().toISOString();
     const { error } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .update({ read_at: now, updated_at: now })
       .eq('client_project_id', req.params.projectId)
       .eq('sender_role', 'admin')

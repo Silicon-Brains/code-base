@@ -41,7 +41,7 @@ messagesAdminRouter.get('/threads', async (_req, res) => {
 
     // Exact unread counts (messages the client sent that no admin has opened yet).
     const { data: unread, error: uErr } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .select('client_project_id')
       .eq('sender_role', 'client')
       .is('read_at', null);
@@ -49,7 +49,7 @@ messagesAdminRouter.get('/threads', async (_req, res) => {
 
     // Latest message per thread, taken from the most recent messages overall.
     const { data: recent, error: rErr } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .select('client_project_id, sender_role, body, created_at')
       .order('created_at', { ascending: false })
       .limit(1000);
@@ -107,7 +107,7 @@ messagesAdminRouter.get('/threads/:id/messages', async (req, res) => {
 
     // Newest N, returned oldest-first for display.
     const { data, error } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .select('id, client_project_id, sender_profile_id, sender_role, body, read_at, created_at')
       .eq('client_project_id', req.params.id)
       .order('created_at', { ascending: false })
@@ -129,7 +129,7 @@ messagesAdminRouter.post('/threads/:id/messages', async (req, res) => {
 
     const profileId = (req as unknown as { profile: { id: string } }).profile.id;
     const { data, error } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .insert({
         client_project_id: req.params.id,
         sender_profile_id: profileId,
@@ -150,7 +150,7 @@ messagesAdminRouter.patch('/threads/:id/read', async (req, res) => {
   if (!uuidSchema.safeParse(req.params.id).success) return res.status(404).json({ error: 'Engagement not found' });
   try {
     const { error } = await supabase
-      .from('messages')
+      .from('engagement_messages')
       .update({ read_at: new Date().toISOString(), updated_at: new Date().toISOString() })
       .eq('client_project_id', req.params.id)
       .eq('sender_role', 'client')

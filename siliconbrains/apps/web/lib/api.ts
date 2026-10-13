@@ -13,7 +13,7 @@ import type {
   AdminDashboard,
 } from "./types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
 
 export class ApiError extends Error {
   constructor(message: string, public status: number) {
@@ -110,3 +110,4 @@ export async function loadOr<T>(label: string, fn: () => Promise<T>, fallback: T
     return fallback;
   }
 }
+

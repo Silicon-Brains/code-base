@@ -15,13 +15,7 @@ const app = express();
 // bucket) or accidentally rate-limiting every request behind that proxy together.
 if (process.env.TRUST_PROXY) app.set("trust proxy", process.env.TRUST_PROXY);
 
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN, // keep the single origin from env
-    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 // Webhook route needs the raw body for signature verification — must come
 // before express.json() and must not be affected by it.

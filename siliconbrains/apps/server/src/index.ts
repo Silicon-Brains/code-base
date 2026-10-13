@@ -15,7 +15,22 @@ const app = express();
 // bucket) or accidentally rate-limiting every request behind that proxy together.
 if (process.env.TRUST_PROXY) app.set("trust proxy", process.env.TRUST_PROXY);
 
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
+const allowedOrigins = (process.env.CORS_ORIGIN ?? 'http://localhost:3000')
+  .split(',')
+  .map((o) => o.trim().replace(/\/+$/, '')) // tolerate trailing slashes
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      // No Origin header = server-to-server or curl (e.g. the Clerk webhook); allow.
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      callback(null, false);
+    },
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+);
 
 // Webhook route needs the raw body for signature verification — must come
 // before express.json() and must not be affected by it.

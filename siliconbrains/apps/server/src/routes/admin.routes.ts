@@ -7,7 +7,7 @@ import { blogAdminRouter } from './Admin.blog.routes.js';
 import { usersAdminRouter } from './Admin.users.routes.js';
 import { settingsAdminRouter } from './Admin.settings.routes.js';
 import { messagesAdminRouter } from './Admin.messages.routes.js';
-
+import { analyticsAdminRouter } from './Admin.analytics.routes.js';
 
 export const adminRouter = Router();
 
@@ -287,6 +287,7 @@ adminRouter.use('/blog-posts', blogAdminRouter);
 adminRouter.use('/users', usersAdminRouter);
 adminRouter.use('/settings', settingsAdminRouter);
 adminRouter.use('/messages', messagesAdminRouter);
+adminRouter.use('/analytics', analyticsAdminRouter);
 
 // ---------------------------------------------------------------------------
 // Leads — read + status only (no create/delete from admin)

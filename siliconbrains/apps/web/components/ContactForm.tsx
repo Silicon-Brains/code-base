@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Button from "./Button";
 import { api } from "@/lib/api";
 import { Icon } from "@/components/public/ui";
@@ -17,12 +18,20 @@ type Status = "idle" | "submitting" | "success" | "error";
 export default function ContactForm() {
   const [projectType, setProjectType] = useState(PROJECT_TYPES[0]);
   const [budget, setBudget] = useState(BUDGETS[2]);
+  const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (status === "submitting") return;
+
+    // The checkbox is also `required`, but never rely on the browser alone.
+    if (!consent) {
+      setStatus("error");
+      setErrorMessage("Please accept the Privacy Policy to send your enquiry.");
+      return;
+    }
 
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -45,6 +54,7 @@ export default function ContactForm() {
       form.reset();
       setProjectType(PROJECT_TYPES[0]);
       setBudget(BUDGETS[2]);
+      setConsent(false);
     } catch (err) {
       setStatus("error");
       setErrorMessage(
@@ -100,6 +110,29 @@ export default function ContactForm() {
           placeholder="Describe your requirements..."
           className={`resize-none ${INPUT_CLASS}`}
         />
+      </label>
+
+      <label className="flex items-start gap-3 text-xs leading-relaxed text-on-surface-variant">
+        <input
+          required
+          type="checkbox"
+          name="privacy_consent"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-[var(--color-primary)]"
+        />
+        <span>
+          I have read and agree to the{" "}
+          <Link
+            href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline underline-offset-2 transition-colors hover:text-on-surface"
+          >
+            Privacy Policy
+          </Link>{" "}
+          and consent to SiliconBrains using my details to respond to this enquiry. *
+        </span>
       </label>
 
       <Button

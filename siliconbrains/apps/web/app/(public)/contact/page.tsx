@@ -9,7 +9,7 @@ import type { Faq } from "@/lib/types";
 export const metadata = { title: "Contact" };
 
 const CHANNELS = [
-  { icon: "mail", label: "Email", value: "team@siliconbrains.in", href: "mailto:team@siliconbrains.in", note: "We usually respond within 24 hours" },
+  { icon: "mail", label: "Email", value: "contact@siliconbrains.in", href: "mailto:contact@siliconbrains.in", note: "We usually respond within 24 hours" },
   { icon: "pin",  label: "Location", value: "Nagpur, Maharashtra, India", note: "Available for remote projects worldwide" },
   { icon: "user", label: "Follow Us", value: "GitHub · LinkedIn · Instagram", note: "See what we're building" },
 ];

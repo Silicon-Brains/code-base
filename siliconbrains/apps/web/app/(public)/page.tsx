@@ -4,6 +4,28 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 import TechChips from "@/components/TechChips";
 import { LaptopFrame, PhoneFrame } from "@/components/DeviceFrame";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Custom Web & Android App Development",
+  description:
+    "SiliconBrains designs and builds custom web applications, backend platforms, and Android apps for startups and businesses. From product strategy to launch, build with an experienced engineering team.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Custom Web & Android App Development | SiliconBrains",
+    description:
+      "Build reliable digital products with SiliconBrains. Custom web platforms, backend systems, and Android applications designed around your goals.",
+    url: "/",
+    type: "website",
+    siteName: "SiliconBrains",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Custom Web & Android App Development | SiliconBrains",
+    description:
+      "Custom web platforms, backend systems, and Android applications designed around your goals.",
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Local content — every block below is *intentionally* hardcoded JSX for the
@@ -91,6 +113,46 @@ const STACK = [
   "Android", "Flutter/Dart", "Supabase", "PostgreSQL", "MySQL", "Python/FastAPI",
 ];
 
+const TECH_COLORS: Record<string, [string, string]> = {
+  "Next.js": ["#4b5563", "#09090b"], React: ["#61dafb", "#087ea4"], TypeScript: ["#3178c6", "#174c83"],
+  "Tailwind CSS": ["#38bdf8", "#087ea4"], "Node.js": ["#83cd29", "#3b7b22"], "Express.js": ["#64748b", "#1e293b"],
+  Android: ["#a4c639", "#477a24"], "Flutter/Dart": ["#54c5f8", "#1769aa"], Supabase: ["#5ee2a0", "#16875b"],
+  PostgreSQL: ["#6aa5d9", "#28577d"], MySQL: ["#62a7c9", "#145374"], "Python/FastAPI": ["#ffd343", "#3476a8"],
+};
+
+function TechnologyLogo({ name }: { name: string }) {
+  const logo = { width: 27, height: 27, viewBox: "0 0 40 40", "aria-hidden": true as const };
+  switch (name) {
+    case "Next.js": return <svg {...logo}><circle cx="20" cy="20" r="17" fill="white" /><path d="M12 28V12h3l10 12V12h3v16h-3L15 16v12z" fill="#111" /></svg>;
+    case "React": return <svg {...logo} fill="none" stroke="white" strokeWidth="1.8"><ellipse cx="20" cy="20" rx="17" ry="6.6" /><ellipse cx="20" cy="20" rx="17" ry="6.6" transform="rotate(60 20 20)" /><ellipse cx="20" cy="20" rx="17" ry="6.6" transform="rotate(120 20 20)" /><circle cx="20" cy="20" r="2.7" fill="white" stroke="none" /></svg>;
+    case "TypeScript": return <svg {...logo}><path fill="white" d="M5 7h30v26H5z" /><path fill="#2468b4" d="M19 19h7v2h-2.4v9h-2.2v-9H19zm8 8.5c.8.7 1.6 1 2.5 1 .8 0 1.2-.3 1.2-.8 0-.4-.3-.7-1.4-1.1-1.9-.7-2.8-1.5-2.8-3 0-1.8 1.4-2.9 3.5-2.9 1.2 0 2.2.3 3 .8l-.7 1.8c-.7-.4-1.4-.7-2.2-.7-.7 0-1.1.3-1.1.8s.4.7 1.6 1.1c1.8.7 2.6 1.5 2.6 3 0 1.8-1.4 3-3.7 3-1.4 0-2.6-.4-3.4-1z" /></svg>;
+    case "Tailwind CSS": return <svg {...logo} viewBox="0 0 24 24"><path fill="white" d="M12 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.9.2 1.6.9 2.3 1.6 1.1 1.1 2.3 2.3 4.5 2.3 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.9-.2-1.6-.9-2.3-1.6-1.1-1.1-2.3-2.3-4.5-2.3ZM6 12.3c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.9.2 1.6.9 2.3 1.6 1.1 1.1 2.3 2.3 4.5 2.3 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.9-.2-1.6-.9-2.3-1.6-1.1-1.1-2.3-2.3-4.5-2.3Z" /></svg>;
+    case "Node.js": return <svg {...logo} fill="none" stroke="white" strokeWidth="1.7"><path d="m20 3 14 8v17l-14 8-14-8V11z" /><text x="20" y="24" textAnchor="middle" fill="white" stroke="none" fontSize="8" fontWeight="700">node</text><text x="20" y="29" textAnchor="middle" fill="white" stroke="none" fontSize="4.5">.js</text></svg>;
+    case "Express.js": return <svg {...logo} viewBox="0 0 80 40"><text x="40" y="25" textAnchor="middle" fill="white" fontSize="18" fontFamily="Arial,sans-serif" letterSpacing="-1.3">express</text></svg>;
+    case "Android": return <svg {...logo} fill="white"><path d="m12 8-2-3 .9-.5 2.1 3.2a14 14 0 0 1 14 0L29 4.5l.9.5-2 3A12 12 0 0 1 33 18H7a12 12 0 0 1 5-10ZM13 12a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm14 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM8 20h24v8a3 3 0 0 1-3 3h-2v4h-3v-4h-8v4h-3v-4h-2a3 3 0 0 1-3-3z" /></svg>;
+    case "Flutter/Dart": return <svg {...logo}><path fill="white" d="M23 3 6 20l7 7L37 3zM23 22l-8 8 7 7 8-8z" /><path fill="#cceeff" d="m15 30 4-4 11 3-8 8z" /></svg>;
+    case "Supabase": return <svg {...logo} viewBox="0 0 24 24"><path fill="white" d="M13.5 2.8a.8.8 0 0 0-1.4-.5L2.3 14.1a.8.8 0 0 0 .6 1.3h7.6v5.8a.8.8 0 0 0 1.4.5l9.8-11.8a.8.8 0 0 0-.6-1.3h-7.6z" /></svg>;
+    case "PostgreSQL": return <svg {...logo} fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 32c-3-1-4-4-4-8V13c0-5 4-8 11-8s12 3 12 9v7c0 3-2 5-5 5h-3v7c0 2-1 3-3 3s-3-1-3-3v-6" /><path d="M13 13h.1M25 13h.1M30 17c4-2 6 0 5 3l-3 5-4 1M13 5 9 2M26 5l4-3" /></svg>;
+    case "MySQL": return <svg {...logo} fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 29c5-1 7-5 9-10 2-4 5-7 9-7 3 0 5 2 6 5 1 3 2 5 5 6-3 1-6 0-8-2-2-2-3-4-5-4-2 0-3 2-4 5-2 5-5 8-12 7Z" /><path d="M24 12c2-4 5-5 9-4M31 22l4 2" /></svg>;
+    case "Python/FastAPI": return <svg {...logo}><path fill="#ffe873" d="M19 3h7c4 0 6 2 6 6v7h-9c-4 0-6 2-6 6v3h-5c-4 0-6-2-6-6v-5c0-4 2-6 6-6h7z" /><path fill="#4b8bbe" d="M21 37h-7c-4 0-6-2-6-6v-7h9c4 0 6-2 6-6v-3h5c4 0 6 2 6 6v5c0 4-2 6-6 6h-7z" /><circle cx="22" cy="8" r="1.4" fill="#356a95" /><circle cx="18" cy="32" r="1.4" fill="#ffe873" /></svg>;
+    default: return <svg {...logo}><circle cx="20" cy="20" r="16" fill="white" /></svg>;
+  }
+}
+
+function TechnologyIcon({ name }: { name: string }) {
+  const [light, dark] = TECH_COLORS[name] ?? ["#718078", "#254e3c"];
+  return (
+    <span
+      aria-hidden="true"
+      className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/40 shadow-[0_5px_10px_rgba(15,35,25,0.2),inset_0_1px_1px_rgba(255,255,255,0.65),inset_0_-2px_3px_rgba(0,0,0,0.16)] transition duration-300 group-hover:-translate-y-1 group-hover:rotate-[-3deg]"
+      style={{ background: `linear-gradient(145deg, ${light}, ${dark})` }}
+    >
+      <span className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-black/15" />
+      <span className="relative drop-shadow-[0_1px_1px_rgba(0,0,0,0.2)]"><TechnologyLogo name={name} /></span>
+    </span>
+  );
+}
+
 const APPROACH = [
   { num: "01", icon: "doc", title: "Understand", desc: "We learn about your goals, users and requirements." },
   { num: "02", icon: "code", title: "Build", desc: "We design and develop the product using the right technology." },
@@ -149,20 +211,20 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col">
       {/* ================= HERO ================= */}
-      <Section className="pt-12 md:pt-20">
+      <Section className="landing-hero mt-7 pt-12 md:mt-10 md:pt-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center">
-          <div>
-            <SectionLabel>Our Services</SectionLabel>
-            <h1 className="text-4xl font-bold leading-[1.05] tracking-tight text-on-surface md:text-5xl lg:text-6xl">
-              Digital Products,
+          <div className="hero-copy-enter">
+            <SectionLabel>Software Engineering Studio</SectionLabel>
+            <h1 className="max-w-2xl text-4xl font-bold leading-[1.02] tracking-[-0.045em] text-on-surface md:text-5xl lg:text-[4.25rem]">
+              Software that moves
               <br />
-              Built Around <span className="text-primary">Your Goals.</span>
+              your business <span className="text-primary">forward.</span>
             </h1>
-            <p className="mt-6 max-w-lg text-base text-on-surface-variant md:text-lg">
-              We design and develop modern web applications and Android solutions that help businesses turn ideas into reliable digital products.
+            <p className="mt-6 max-w-xl text-base leading-7 text-on-surface-variant md:text-lg md:leading-8">
+              We partner with ambitious teams to design and build dependable web platforms, mobile apps, and software systems—from the first technical decision to launch.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button href="/contact" variant="primary" size="lg" className="!bg-white !text-[#123c2e] hover:!bg-[#e8f0e5]">
                 Start a Project
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M13 6l6 6-6 6" />
@@ -175,20 +237,24 @@ export default function LandingPage() {
                 </svg>
               </Button>
             </div>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-on-surface-variant">
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-secondary" /> Product-minded engineering</span>
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-secondary" /> Clear delivery process</span>
+            </div>
           </div>
 
           {/* Hero device mockups */}
-          <div className="relative">
+          <div className="relative hero-visual-enter">
             {/* Decorative background circle */}
             <div
               aria-hidden
-              className="absolute -right-6 top-1/2 hidden h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-primary-container/60 md:block"
+              className="hero-orbit absolute -right-6 top-1/2 hidden h-[420px] w-[420px] -translate-y-1/2 rounded-full bg-primary-container/60 md:block"
             />
             <div className="relative">
               <div className="mr-20 md:mr-32">
                 <LaptopFrame />
               </div>
-              <div className="absolute -bottom-6 right-0 md:right-4">
+              <div className="hero-phone absolute -bottom-6 right-0 md:right-4">
                 <PhoneFrame />
               </div>
             </div>
@@ -196,11 +262,11 @@ export default function LandingPage() {
         </div>
 
         {/* Stat row */}
-        <div className="mt-16 grid grid-cols-2 gap-6 border-t border-outline pt-8 md:grid-cols-4 md:gap-10">
+        <div className="landing-stats mt-14 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-outline pt-7 md:mt-16 md:grid-cols-4 md:gap-10 md:pt-8">
           {HERO_STATS.map((s) => (
-            <div key={s.label}>
-              <p className="text-3xl font-bold text-on-surface md:text-4xl">{s.value}</p>
-              <p className="mt-1 text-xs font-medium uppercase tracking-wider text-on-surface-variant">
+            <div key={s.label} className="stat-item">
+              <p className="text-3xl font-bold tracking-tight text-on-surface md:text-4xl">{s.value}</p>
+              <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-on-surface-variant md:text-[11px]">
                 {s.label}
               </p>
             </div>
@@ -218,7 +284,7 @@ export default function LandingPage() {
 
         <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
           {WHAT_WE_DO.map((s) => (
-            <Card key={s.title} className="flex flex-col gap-6">
+            <Card key={s.title} interactive className="flex flex-col gap-6">
               <div className="flex items-start gap-4">
                 <IconTile name={s.icon} />
                 <div>
@@ -263,7 +329,7 @@ export default function LandingPage() {
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {WEB_STEPS.map((s) => (
-            <Card key={s.num} className="flex flex-col gap-4">
+            <Card key={s.num} interactive className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <IconTile name={s.icon} />
                 <span className="text-xs font-medium text-on-surface-variant">{s.num}</span>
@@ -311,7 +377,7 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {ANDROID_STEPS.map((s) => (
-              <Card key={s.num} className="flex flex-col gap-3">
+              <Card key={s.num} interactive className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <IconTile name={s.icon} />
                   <span className="text-xs font-medium text-on-surface-variant">{s.num}</span>
@@ -336,7 +402,7 @@ export default function LandingPage() {
 
         <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-3">
           {SOLUTIONS.map((s) => (
-            <Card key={s.title} className="flex flex-col gap-4">
+            <Card key={s.title} interactive className="flex flex-col gap-4">
               <IconTile name={s.icon} />
               <div>
                 <h3 className="text-lg font-bold text-on-surface">{s.title}</h3>
@@ -364,9 +430,10 @@ export default function LandingPage() {
           {STACK.map((t) => (
             <div
               key={t}
-              className="flex items-center justify-center rounded-xl border border-outline bg-surface px-3 py-4 text-sm font-medium text-on-surface"
+              className="group flex min-h-[68px] items-center gap-3 rounded-2xl border border-outline/80 bg-surface px-3 py-3 text-left text-sm font-semibold text-on-surface shadow-[0_5px_18px_rgba(20,38,30,0.035)] transition duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_14px_30px_rgba(20,38,30,0.11)] sm:px-4"
             >
-              {t}
+              <TechnologyIcon name={t} />
+              <span className="leading-tight">{t}</span>
             </div>
           ))}
         </div>
@@ -385,7 +452,7 @@ export default function LandingPage() {
         <div className="mt-10 grid grid-cols-1 items-start gap-6 md:grid-cols-[1fr_auto_1fr_auto_1fr]">
           {APPROACH.map((s, i) => (
             <div key={s.num} className="contents">
-              <Card className="flex flex-col gap-3">
+              <Card interactive className="flex flex-col gap-3">
                 <div className="flex items-center gap-3">
                   <IconTile name={s.icon} />
                   <span className="text-xs font-semibold uppercase tracking-wider text-primary">{s.num}</span>
@@ -407,29 +474,29 @@ export default function LandingPage() {
 
       {/* ================= FINAL CTA ================= */}
       <Section className="pt-24">
-        <div className="relative overflow-hidden rounded-3xl bg-secondary-container px-6 py-12 md:px-12 md:py-16">
+        <div className="landing-cta relative overflow-hidden rounded-3xl px-6 py-12 md:px-12 md:py-16">
           <div
             aria-hidden
-            className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-primary-container/70"
+            className="cta-glow absolute -right-24 -top-24 h-72 w-72 rounded-full"
           />
           <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-lg">
-              <SectionLabel>Let's Build Together</SectionLabel>
-              <h2 className="text-3xl font-bold leading-tight tracking-tight text-on-surface md:text-4xl">
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#b8d9c0]">Let's Build Together</p>
+              <h2 className="text-3xl font-bold leading-tight tracking-tight text-white md:text-4xl">
                 Have a Product in Mind?
               </h2>
-              <p className="mt-3 text-base text-on-surface-variant">
+              <p className="mt-3 text-base leading-7 text-white/75">
                 Tell us what you want to build. We'll help turn the idea into a digital product.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button href="/contact" variant="primary" size="lg">
+              <Button href="/contact" variant="primary" size="lg" className="!bg-white !text-[#123c2e] hover:!bg-[#e8f0e5]">
                 Start a Project
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </Button>
-              <Button href="/projects" variant="secondary" size="lg">
+              <Button href="/projects" variant="secondary" size="lg" className="border-white/20 !bg-white/10 !text-white hover:!bg-white/15 hover:!text-white">
                 View Our Projects
               </Button>
             </div>

@@ -8,6 +8,12 @@ import { api } from "@/lib/api";
 import type { Lead, LeadStatus } from "@/lib/types";
 
 const STATUSES: LeadStatus[] = ["new", "contacted", "converted", "archived"];
+const STATUS_LABEL: Record<LeadStatus, string> = {
+  new: "New",
+  contacted: "Contacted",
+  converted: "Approved",
+  archived: "Archived",
+};
 
 export default function LeadsInbox() {
   const { getToken } = useAuth();
@@ -16,6 +22,7 @@ export default function LeadsInbox() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const token = useCallback(async () => {
     const t = await getToken();
@@ -48,6 +55,21 @@ export default function LeadsInbox() {
       setLeads((prev) => prev.map((l) => (l.id === lead.id ? { ...l, status: updated.status } : l)));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Update failed");
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const deleteLead = async (lead: Lead) => {
+    if (busyId) return;
+    setBusyId(lead.id);
+    setError("");
+    try {
+      await api.admin.remove(await token(), "leads", lead.id);
+      setLeads((current) => current.filter((item) => item.id !== lead.id));
+      setConfirmDeleteId(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Could not delete enquiry");
     } finally {
       setBusyId(null);
     }
@@ -128,9 +150,37 @@ export default function LeadsInbox() {
                         : "border-outline text-on-surface-variant hover:border-primary/30"
                     }`}
                   >
-                    {s}
+                    {s === "converted" ? (l.status === "converted" ? "Approved" : "Approve client") : STATUS_LABEL[s]}
                   </button>
                 ))}
+                <div className="ml-auto flex items-center gap-2">
+                  {confirmDeleteId === l.id ? (
+                    <>
+                      <span className="text-xs text-error">Delete this enquiry permanently?</span>
+                      <button
+                        type="button"
+                        disabled={busyId === l.id}
+                        onClick={() => void deleteLead(l)}
+                        className="rounded-full border border-error/40 bg-error/10 px-3 py-1 text-xs font-medium text-error transition hover:bg-error/15 disabled:opacity-50"
+                      >
+                        {busyId === l.id ? "Deleting…" : "Confirm delete"}
+                      </button>
+                      <button
+                        type="button"
+                        disabled={busyId === l.id}
+                        onClick={() => setConfirmDeleteId(null)}
+                        className="rounded-full border border-outline px-3 py-1 text-xs text-on-surface-variant transition hover:border-primary/30 disabled:opacity-50"
+                      >Cancel</button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={busyId === l.id}
+                      onClick={() => setConfirmDeleteId(l.id)}
+                      className="rounded-full border border-error/30 px-3 py-1 text-xs font-medium text-error transition hover:bg-error/10 disabled:opacity-50"
+                    >Delete enquiry</button>
+                  )}
+                </div>
               </div>
             </Card>
           ))}

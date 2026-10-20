@@ -6,8 +6,13 @@ import TechChips from "@/components/TechChips";
 import { api, loadOr } from "@/lib/api";
 import { SectionLabel, IconTile, CheckItem, PageHero, Icon } from "@/components/public/ui";
 import type { Service } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Services" };
+export const metadata = pageMetadata(
+  "Web, Android & Custom Software Services",
+  "SiliconBrains builds full-stack web applications, Android apps, backend systems, cloud infrastructure, and AI solutions tailored to your organization.",
+  "/services",
+);
 
 // Four "how we deliver" steps — hardcoded, matches the design's
 // End-to-End Development Services block.

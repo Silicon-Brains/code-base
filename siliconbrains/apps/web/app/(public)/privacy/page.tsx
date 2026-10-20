@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: "Privacy & Policy",
   description:
     "How SiliconBrains collects, uses, stores, shares and protects personal data.",
+  alternates: { canonical: "/privacy" },
 };
 
 // TODO before launch: replace these two placeholders (Section 16).

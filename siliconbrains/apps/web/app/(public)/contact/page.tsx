@@ -5,8 +5,13 @@ import ContactForm from "@/components/ContactForm";
 import { api, loadOr } from "@/lib/api";
 import { SectionLabel, Icon, PageHero } from "@/components/public/ui";
 import type { Faq } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Contact" };
+export const metadata = pageMetadata(
+  "Contact SiliconBrains",
+  "Discuss your web application, Android app, or software engineering project with SiliconBrains. Tell us what you are building and get a clear next step.",
+  "/contact",
+);
 
 const CHANNELS = [
   { icon: "mail", label: "Email", value: "contact@siliconbrains.in", href: "mailto:contact@siliconbrains.in", note: "We usually respond within 24 hours" },

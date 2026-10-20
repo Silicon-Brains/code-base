@@ -20,7 +20,7 @@ export const SERVICES: ResourceConfig = {
   description: "Shown on the Landing (first two) and Services pages. Changes appear on the public site within ~60 seconds.",
   fields: [
     { key: "title", label: "Title", type: "text", required: true },
-    { key: "slug", label: "Slug", type: "text", required: true, help: "lowercase-with-hyphens; must be unique" },
+    { key: "slug", label: "Slug", type: "text", required: true, help: "Generated from the title; lowercase letters, numbers, and hyphens only. You can edit it." },
     { key: "category", label: "Category", type: "select", options: SERVICE_CATEGORIES },
     { key: "tag", label: "Tag", type: "text", help: 'Small badge, e.g. "Distributed Systems"' },
     { key: "icon", label: "Icon key", type: "text" },
@@ -48,7 +48,7 @@ export const PROJECTS: ResourceConfig = {
   description: "Portfolio / case studies. The one marked Featured becomes the flagship card on /projects.",
   fields: [
     { key: "title", label: "Title", type: "text", required: true },
-    { key: "slug", label: "Slug", type: "text", required: true, help: "Used in the URL: /projects/<slug>" },
+    { key: "slug", label: "Slug", type: "text", required: true, help: "Generated from the title; used in /projects/<slug>. You can edit it." },
     { key: "category", label: "Category", type: "select", options: PROJECT_CATEGORIES },
     { key: "tag", label: "Display tag", type: "text", help: 'e.g. "Full-Stack Web & IoT"' },
     { key: "summary", label: "Summary", type: "textarea" },

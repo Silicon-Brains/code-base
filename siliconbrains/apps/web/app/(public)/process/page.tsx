@@ -4,8 +4,13 @@ import Button from "@/components/Button";
 import { api, loadOr } from "@/lib/api";
 import { SectionLabel, IconTile, PageHero, Icon } from "@/components/public/ui";
 import type { ProcessStep } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Process" };
+export const metadata = pageMetadata(
+  "Our Software Development Process",
+  "See how SiliconBrains takes software projects from discovery and architecture through development, launch, and ongoing improvement.",
+  "/process",
+);
 
 export default async function ProcessPage() {
   const steps = await loadOr<ProcessStep[]>("process steps", () => api.getProcessSteps(), []);

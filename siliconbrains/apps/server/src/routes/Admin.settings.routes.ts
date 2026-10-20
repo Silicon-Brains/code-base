@@ -60,7 +60,7 @@ settingsAdminRouter.get('/', async (_req, res) => {
     return res.status(500).json({ error: 'Could not load settings' });
   }
   if (!data) {
-    return res.status(404).json({ error: 'Settings row missing. Run migration 005_site_settings.sql.' });
+    return res.status(404).json({ error: 'Settings row missing. Run migrations/006_admin_redesign.sql and 007_admin_runtime_schema.sql.' });
   }
   res.json(data);
 });
@@ -85,7 +85,7 @@ settingsAdminRouter.patch('/', async (req, res) => {
     return res.status(500).json({ error: 'Something went wrong. Try again.' });
   }
   if (!data) {
-    return res.status(404).json({ error: 'Settings row missing. Run migration 005_site_settings.sql.' });
+    return res.status(404).json({ error: 'Settings row missing. Run migrations/006_admin_redesign.sql and 007_admin_runtime_schema.sql.' });
   }
   res.json(data);
 });

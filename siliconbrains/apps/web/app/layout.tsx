@@ -10,7 +10,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 const DESCRIPTION =
-  "SiliconBrains is a software engineering studio building full-stack web platforms and native Android apps for high-growth ventures — clean architecture, strict testing, 100% client IP ownership.";
+  "SiliconBrains designs and builds custom web applications, backend platforms, and Android apps for startups and businesses. From product strategy to launch, build with an experienced engineering team.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -20,6 +20,14 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   applicationName: "SiliconBrains",
+  category: "technology",
+  keywords: [
+    "custom software development",
+    "web application development",
+    "Android app development",
+    "full-stack development",
+    "software engineering studio",
+  ],
   openGraph: {
     type: "website",
     siteName: "SiliconBrains",
@@ -37,9 +45,36 @@ export const viewport: Viewport = { themeColor: "#051F20" };
 // actually takes effect instead of being moot). ClerkProvider is scoped down into the route groups
 // that actually need it: (admin), (portal), sign-in, sign-up — see their own layout.tsx files.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "SiliconBrains",
+        url: SITE_URL,
+        description: DESCRIPTION,
+        email: "engineering@siliconbrains.com",
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        name: "SiliconBrains",
+        url: SITE_URL,
+        publisher: { "@id": `${SITE_URL}/#organization` },
+        inLanguage: "en",
+      },
+    ],
+  };
   return (
     <html lang="en" className={plusJakarta.variable}>
-      <body className="font-display">{children}</body>
+      <body className="font-display">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

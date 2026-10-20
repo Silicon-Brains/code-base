@@ -74,7 +74,7 @@ siliconbrains/
 │       │   ├── middleware/            # requireAuth · requireRole · rateLimit
 │       │   ├── lib/supabase.ts        # service-role client
 │       │   └── scripts/               # seed.ts (upserts CMS content) · seed-data.ts (the content)
-│       └── migrations/                # 001_init · 002_seed_constraints · 003_cms_display_fields
+│       └── migrations/                # 001–010 schema migrations + message.sql
 └── (each app has its own env example file)
 ```
 
@@ -191,7 +191,9 @@ static/ISR. Do not import Clerk into any `(public)` page or shared public compon
 | `CLERK_WEBHOOK_SECRET` | svix signing secret for `/webhooks/clerk` |
 
 ### Database setup (in order)
-1. Run `migrations/001_init.sql`, `002_seed_constraints.sql`, `003_cms_display_fields.sql` in the Supabase SQL editor.
+1. Run `migrations/001_init.sql`, `002_seed_constraints.sql`, `003_cms_display_fields.sql`, `004_ops_telemetry.sql`,
+   `005_portal_sprint.sql`, `message.sql`, `006_admin_redesign.sql`, `007_admin_runtime_schema.sql`, and
+   `008_invoice_documents.sql`, `009_invoice_number_sequence.sql`, and `010_approved_enquiry_clients.sql` in order in the Supabase SQL editor.
 2. `npm run db:seed --workspace=apps/server` (idempotent upserts for services, projects, contact FAQs, process steps;
    testimonials are intentionally unseeded).
 3. Add the Clerk webhook, then sign up; promote your admin row manually.

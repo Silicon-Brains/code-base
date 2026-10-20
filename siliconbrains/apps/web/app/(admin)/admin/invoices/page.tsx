@@ -1,6 +1,5 @@
-import ResourceManager from "@/components/admin/ResourceManager";
-import { INVOICES } from "@/lib/admin-config";
+import InvoiceManager from "@/components/admin/InvoiceManager";
 
 export default function AdminInvoicesPage() {
-  return <ResourceManager {...INVOICES} />;
+  return <InvoiceManager />;
 }

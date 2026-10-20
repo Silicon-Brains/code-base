@@ -20,3 +20,233 @@ body {
 .theme-light body {
   color-scheme: light;
 }
+
+/* Small, compositor-friendly motion for the public marketing experience. */
+.public-page-enter {
+  animation: page-enter 500ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+
+.hero-copy-enter {
+  animation: hero-enter 700ms cubic-bezier(0.2, 0.7, 0.25, 1) 80ms both;
+}
+
+.hero-visual-enter {
+  animation: hero-enter 800ms cubic-bezier(0.2, 0.7, 0.25, 1) 160ms both;
+}
+
+.hero-laptop {
+  animation: device-float 7s ease-in-out 1s infinite;
+}
+
+.hero-phone {
+  animation: device-float 6s ease-in-out 1.4s infinite reverse;
+}
+
+.hero-orbit {
+  animation: orbit-breathe 8s ease-in-out infinite;
+}
+
+.landing-hero {
+  isolation: isolate;
+  border-radius: 2rem;
+  background:
+    radial-gradient(ellipse at 82% 32%, rgba(217, 232, 222, 0.72), transparent 35%),
+    linear-gradient(135deg, #fbfcf9 0%, #f2f6ef 58%, #edf4ed 100%);
+  box-shadow: inset 0 0 0 1px rgba(31, 78, 61, 0.06);
+}
+
+.landing-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.landing-stats .stat-item {
+  animation: stat-enter 600ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+
+.landing-stats .stat-item:nth-child(2) { animation-delay: 80ms; }
+.landing-stats .stat-item:nth-child(3) { animation-delay: 160ms; }
+.landing-stats .stat-item:nth-child(4) { animation-delay: 240ms; }
+
+.landing-cta {
+  background: linear-gradient(115deg, #123c2e 0%, #1f4e3d 58%, #286044 100%);
+  box-shadow: 0 24px 60px rgba(17, 54, 40, 0.16);
+}
+
+.cta-glow {
+  background: radial-gradient(circle, rgba(169, 210, 182, 0.34), rgba(169, 210, 182, 0) 70%);
+}
+
+.landing-cta > div:last-child {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-light header > div:first-child {
+  box-shadow: 0 8px 30px rgba(20, 38, 30, 0.045);
+}
+
+.theme-light .rounded-2xl.border.border-outline.bg-surface {
+  box-shadow: 0 10px 32px rgba(20, 38, 30, 0.035);
+}
+
+.theme-dark .landing-hero {
+  background:
+    radial-gradient(ellipse at 82% 32%, rgba(129, 153, 174, 0.2), transparent 38%),
+    linear-gradient(135deg, #1a242e 0%, #1f2c38 58%, #293a4a 100%);
+  box-shadow: inset 0 0 0 1px rgba(183, 198, 211, 0.12);
+}
+
+.theme-dark .landing-cta {
+  background: linear-gradient(115deg, #1f2c38 0%, #293a4a 58%, #33475a 100%);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.theme-dark .cta-glow {
+  background: radial-gradient(circle, rgba(129, 153, 174, 0.3), rgba(129, 153, 174, 0) 70%);
+}
+
+.theme-dark header > div:first-child {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.22);
+}
+
+.theme-dark .rounded-2xl.border.border-outline.bg-surface {
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.18);
+}
+
+.admin-page-enter {
+  animation: admin-page-in 380ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+
+.admin-sidebar {
+  box-shadow: 1px 0 0 rgba(26, 31, 26, 0.015);
+}
+
+.admin-nav-link[aria-current="page"] {
+  box-shadow: inset 2px 0 0 var(--color-primary);
+}
+
+.admin-topbar {
+  box-shadow: 0 4px 16px rgba(26, 31, 26, 0.025);
+}
+
+.admin-table-row {
+  transition: background-color 160ms ease;
+}
+
+.admin-table-row:hover {
+  background-color: var(--color-surface-container-low);
+}
+
+.admin-table-row:nth-child(1) { animation: admin-row-in 300ms 20ms both; }
+.admin-table-row:nth-child(2) { animation: admin-row-in 300ms 40ms both; }
+.admin-table-row:nth-child(3) { animation: admin-row-in 300ms 60ms both; }
+.admin-table-row:nth-child(4) { animation: admin-row-in 300ms 80ms both; }
+.admin-table-row:nth-child(5) { animation: admin-row-in 300ms 100ms both; }
+.admin-table-row:nth-child(6) { animation: admin-row-in 300ms 120ms both; }
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--color-on-surface-variant);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.invoice-editor {
+  animation: admin-dialog-in 240ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+
+.admin-command-backdrop {
+  animation: admin-fade-in 140ms ease-out both;
+}
+
+.admin-command-panel {
+  animation: admin-dialog-in 180ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+
+.theme-admin :is(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.theme-admin :is(input, textarea, select) {
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.theme-admin :is(input, textarea, select):focus {
+  border-color: rgba(31, 78, 61, 0.55);
+  box-shadow: 0 0 0 3px rgba(31, 78, 61, 0.08);
+}
+
+.theme-admin.theme-admin-dark :is(input, textarea, select):focus {
+  border-color: rgba(129, 153, 174, 0.72);
+  box-shadow: 0 0 0 3px rgba(129, 153, 174, 0.16);
+}
+
+.theme-light a,
+.theme-light button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.theme-light main a:focus-visible,
+.theme-light main button:focus-visible {
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 3px;
+}
+
+@keyframes page-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes hero-enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes device-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes orbit-breathe {
+  0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.55; }
+  50% { transform: translateY(-50%) scale(1.04); opacity: 0.8; }
+}
+
+@keyframes stat-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes admin-page-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes admin-row-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes admin-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes admin-dialog-in {
+  from { opacity: 0; transform: translateY(-8px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

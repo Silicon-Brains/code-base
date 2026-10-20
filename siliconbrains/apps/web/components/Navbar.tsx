@@ -9,6 +9,23 @@ import Button from "./Button";
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem("siliconbrains-theme");
+    const shouldUseDark = savedTheme === "dark";
+    setDarkTheme(shouldUseDark);
+    document.querySelector(".public-theme-root")?.classList.toggle("theme-dark", shouldUseDark);
+    document.documentElement.style.colorScheme = shouldUseDark ? "dark" : "light";
+  }, []);
+
+  const toggleTheme = () => {
+    const nextIsDark = !darkTheme;
+    setDarkTheme(nextIsDark);
+    document.querySelector(".public-theme-root")?.classList.toggle("theme-dark", nextIsDark);
+    document.documentElement.style.colorScheme = nextIsDark ? "dark" : "light";
+    window.localStorage.setItem("siliconbrains-theme", nextIsDark ? "dark" : "light");
+  };
 
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
@@ -69,6 +86,23 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-outline bg-surface text-on-surface transition-colors hover:bg-surface-container-high"
+            aria-label={`Switch to ${darkTheme ? "light" : "dark"} theme`}
+            title={`Switch to ${darkTheme ? "light" : "dark"} theme`}
+          >
+            {darkTheme ? (
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" /><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+              </svg>
+            ) : (
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" />
+              </svg>
+            )}
+          </button>
           <Button
             href="/contact"
             variant="primary"

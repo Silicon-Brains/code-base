@@ -126,12 +126,34 @@ const schemas = {
   invoices: z
     .object({
       client_project_id: uuid,
-      invoice_number: req(50),
+      invoice_number: z.string().trim().max(50).optional(),
       amount: z.number().nonnegative().max(1e9),
       currency: z.string().trim().length(3).toUpperCase().optional(),
       status: z.enum(["pending", "paid", "overdue"]).optional(),
       issued_date: date,
       due_date: date,
+      line_items: z.array(z.object({
+        description: req(500),
+        qty: z.number().positive().max(1e6),
+        rate: z.number().nonnegative().max(1e9),
+      }).strict()).max(60).optional(),
+      po_ref: opt(100),
+      discount_percent: z.number().min(0).max(100).optional(),
+      other_charges: z.number().nonnegative().max(1e9).optional(),
+      payment_status: z.enum(["unpaid", "partial", "paid"]).optional(),
+      billed_to_name: opt(200),
+      billed_to_company: opt(200),
+      billed_to_email: z.union([z.string().trim().email().max(200), z.literal(""), z.null()]).optional(),
+      billed_to_phone: opt(60),
+      billed_to_address: opt(1000),
+      bank_account_name: opt(200),
+      bank_branch: opt(200),
+      bank_account_no: opt(100),
+      bank_ifsc_swift: opt(100),
+      upi_id: opt(200),
+      cheque_in_favour: opt(200),
+      payment_link: z.union([z.string().trim().url().max(1000), z.literal(""), z.null()]).optional(),
+      late_fee_percent: z.number().min(0).max(100).nullable().optional(),
     })
     .strict(),
 };
@@ -290,7 +312,7 @@ adminRouter.use('/messages', messagesAdminRouter);
 adminRouter.use('/analytics', analyticsAdminRouter);
 
 // ---------------------------------------------------------------------------
-// Leads — read + status only (no create/delete from admin)
+// Leads — read + status updates; approval provisions a linked client profile.
 // ---------------------------------------------------------------------------
 
 adminRouter.get("/leads", async (_req, res) => {
@@ -307,6 +329,52 @@ adminRouter.patch("/leads/:id", async (req, res) => {
     return res.status(404).json({ error: "Record not found" });
   const parsed = z.object({ status: z.enum(LEAD_STATUSES) }).strict().safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: issuesToMessage(parsed.error.issues) });
+
+  if (parsed.data.status === "converted") {
+    const { data: lead, error: leadError } = await supabase
+      .from("leads")
+      .select("id, full_name, work_email, organization")
+      .eq("id", req.params.id)
+      .single();
+    if (leadError) return sendDbError(res, leadError);
+
+    const email = lead.work_email.trim().toLowerCase();
+    const { data: existingProfile, error: profileLookupError } = await supabase
+      .from("profiles")
+      .select("id, role, source_lead_id")
+      .ilike("email", email)
+      .limit(1)
+      .maybeSingle();
+    if (profileLookupError) return sendDbError(res, profileLookupError);
+    if (existingProfile?.role === "admin") {
+      return res.status(409).json({ error: "This enquiry uses an admin email and cannot be approved as a client." });
+    }
+
+    if (existingProfile) {
+      const updates: Record<string, unknown> = {};
+      if (!existingProfile.source_lead_id) updates.source_lead_id = lead.id;
+      if (Object.keys(updates).length > 0) {
+        const { error: profileUpdateError } = await supabase
+          .from("profiles")
+          .update(updates)
+          .eq("id", existingProfile.id);
+        if (profileUpdateError) return sendDbError(res, profileUpdateError);
+      }
+    } else {
+      const { error: profileCreateError } = await supabase
+        .from("profiles")
+        .upsert({
+          source_lead_id: lead.id,
+          clerk_user_id: null,
+          email,
+          full_name: lead.full_name,
+          company_name: lead.organization,
+          role: "client",
+        }, { onConflict: "source_lead_id" });
+      if (profileCreateError) return sendDbError(res, profileCreateError);
+    }
+  }
+
   const { data, error } = await supabase
     .from("leads")
     .update(parsed.data)
@@ -315,6 +383,20 @@ adminRouter.patch("/leads/:id", async (req, res) => {
     .single();
   if (error) return sendDbError(res, error);
   res.json(data);
+});
+
+adminRouter.delete("/leads/:id", async (req, res) => {
+  if (!uuid.safeParse(req.params.id).success)
+    return res.status(404).json({ error: "Record not found" });
+  const { data, error } = await supabase
+    .from("leads")
+    .delete()
+    .eq("id", req.params.id)
+    .select("id")
+    .maybeSingle();
+  if (error) return sendDbError(res, error);
+  if (!data) return res.status(404).json({ error: "Enquiry not found" });
+  res.status(204).send();
 });
 
 // ---------------------------------------------------------------------------
@@ -370,6 +452,21 @@ adminRouter.use(
     table: "invoices",
     schema: schemas.invoices,
     order: { column: "created_at", ascending: false },
+    beforeWrite: (body) => {
+      const items = body.line_items;
+      if (!Array.isArray(items) || items.length === 0 || body.amount === undefined) return null;
+      const subtotalCents = items.reduce((sum, item) => {
+        const line = item as { qty: number; rate: number };
+        return sum + Math.round(line.qty * line.rate * 100);
+      }, 0);
+      const discountCents = Math.round(subtotalCents * Number(body.discount_percent ?? 0) / 100);
+      const chargesCents = Math.round(Number(body.other_charges ?? 0) * 100);
+      const totalCents = subtotalCents - discountCents + chargesCents;
+      if (Math.round(Number(body.amount) * 100) !== totalCents) {
+        return "Invoice amount must match the line items, discount, and other charges.";
+      }
+      return null;
+    },
   })
 );
 

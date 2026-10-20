@@ -9,7 +9,7 @@ See `docs/` for PRD, architecture, database schema, phases, and rules.
 1. `npm install` (root — installs both workspaces)
 2. Copy `apps/web/.env.local.example` → `apps/web/.env.local`, fill in Clerk keys + `NEXT_PUBLIC_API_URL` (+ `NEXT_PUBLIC_SITE_URL` = your production origin, for canonical URLs/sitemap/OG)
 3. Copy `apps/server/.env.example` → `apps/server/.env`, fill in Supabase + Clerk keys
-4. Create a Supabase project, run `apps/server/migrations/001_init.sql`, `002_seed_constraints.sql`, then `003_cms_display_fields.sql` in the SQL editor (in order), then seed the CMS: `npm run db:seed --workspace=apps/server`
+4. Create a Supabase project and run the SQL migrations in `apps/server/migrations/` in order: `001_init.sql`, `002_seed_constraints.sql`, `003_cms_display_fields.sql`, `004_ops_telemetry.sql`, `005_portal_sprint.sql`, `message.sql`, `006_admin_redesign.sql`, `007_admin_runtime_schema.sql`, `008_invoice_documents.sql`, `009_invoice_number_sequence.sql`, and `010_approved_enquiry_clients.sql`. Then seed the CMS: `npm run db:seed --workspace=apps/server`
 5. In Clerk dashboard, add a webhook → `POST {API_URL}/webhooks/clerk`, event `user.created`, copy signing secret into `CLERK_WEBHOOK_SECRET`
 6. `npm run dev` from root — runs web (:3000) and server (:4000) together
 

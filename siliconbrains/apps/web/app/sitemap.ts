@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-const STATIC_PATHS = ["/", "/services", "/projects", "/about", "/process", "/contact"];
+const STATIC_PATHS = ["/", "/services", "/projects", "/about", "/process", "/contact", "/privacy"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // If the API is down (e.g. at build time) we still emit the static routes.

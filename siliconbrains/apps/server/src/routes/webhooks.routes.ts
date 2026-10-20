@@ -29,19 +29,35 @@ webhooksRouter.post("/clerk", async (req, res) => {
   }
 
   if (evt.type === "user.created") {
-    const { id, email_addresses, first_name, last_name } = evt.data;
-    const email = email_addresses?.[0]?.email_address ?? null;
+    const { id, email_addresses, primary_email_address_id, first_name, last_name } = evt.data;
+    const primaryEmail = email_addresses?.find((entry: { id: string }) => entry.id === primary_email_address_id)?.email_address
+      ?? email_addresses?.[0]?.email_address;
+    const email = primaryEmail?.trim().toLowerCase() ?? null;
     const fullName = [first_name, last_name].filter(Boolean).join(" ") || null;
 
-    const { error } = await supabase.from("profiles").insert({
-      clerk_user_id: id,
-      email,
-      full_name: fullName,
-      role: "client", // default — promote to admin manually in Supabase
-    });
+    const { data: approvedProfile, error: lookupError } = email
+      ? await supabase.from("profiles").select("id, clerk_user_id").ilike("email", email).limit(1).maybeSingle()
+      : { data: null, error: null };
+    if (lookupError) {
+      console.error("Failed to find approved client profile:", lookupError);
+      return res.status(500).json({ error: "Failed to link client profile" });
+    }
+    if (approvedProfile?.clerk_user_id && approvedProfile.clerk_user_id !== id) {
+      return res.status(409).json({ error: "This email is already linked to another account" });
+    }
 
-    if (error) {
-      console.error("Failed to create profile from webhook:", error);
+    const result = approvedProfile
+      ? await supabase.from("profiles").update({ clerk_user_id: id, email, full_name: fullName ?? undefined })
+          .eq("id", approvedProfile.id).is("clerk_user_id", null)
+      : await supabase.from("profiles").insert({
+          clerk_user_id: id,
+          email,
+          full_name: fullName,
+          role: "client", // default — promote to admin manually in Supabase
+        });
+
+    if (result.error) {
+      console.error("Failed to create or link profile from webhook:", result.error);
       return res.status(500).json({ error: "Failed to create profile" });
     }
   }

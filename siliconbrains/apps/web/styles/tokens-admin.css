@@ -30,6 +30,44 @@
   --admin-header-bg: #f6f7f6;
 }
 
+/* Admin dark mode: 60% slate foundation, 30% blue-gray work surfaces,
+   and 10% steel-blue interaction accents. */
+.theme-admin.theme-admin-dark {
+  --color-background: #10161c;
+  --color-surface: #1a242e;
+  --color-surface-container-low: #18222c;
+  --color-surface-container: #1f2c38;
+  --color-surface-container-high: #293a4a;
+  --color-surface-container-highest: #33475a;
+  --color-on-surface: #e7edf2;
+  --color-on-surface-variant: #b7c6d3;
+  --color-outline: rgba(183, 198, 211, 0.16);
+  --color-outline-strong: rgba(183, 198, 211, 0.34);
+  --color-primary: #8199ae;
+  --color-on-primary: #10161c;
+  --color-primary-container: #33475a;
+  --color-secondary: #b7c6d3;
+  --color-secondary-container: #1f2c38;
+  --color-error: #ffb4ab;
+  --color-on-error: #10161c;
+
+  --admin-sidebar-bg: #18222c;
+  --admin-sidebar-border: rgba(183, 198, 211, 0.14);
+  --admin-header-bg: #10161c;
+  color-scheme: dark;
+  transition: background-color 240ms ease, color 240ms ease;
+}
+
+.theme-admin.theme-admin-dark .admin-status-dot-ongoing { background: #8199ae; }
+.theme-admin.theme-admin-dark .admin-status-dot-completed { background: #8fb99d; }
+.theme-admin.theme-admin-dark .admin-status-dot-planning { background: #d8b878; }
+.theme-admin.theme-admin-dark .admin-status-dot-on_hold { background: #b7c6d3; }
+.theme-admin.theme-admin-dark .admin-status-dot-cancelled { background: #ff8e86; }
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-admin.theme-admin-dark { transition: none; }
+}
+
 /* Sidebar nav active pill + status dot colors */
 .theme-admin .admin-status-dot-ongoing     { background: #2a6a4d; }
 .theme-admin .admin-status-dot-completed   { background: #1f4e3d; }

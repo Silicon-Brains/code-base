@@ -7,8 +7,13 @@ import { FilterProvider, FilterChips, FilterItem } from "@/components/CategoryFi
 import { api, loadOr } from "@/lib/api";
 import { SectionLabel, IconTile, Icon, PageHero } from "@/components/public/ui";
 import type { Project } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "Projects" };
+export const metadata = pageMetadata(
+  "Software Development Projects",
+  "Explore web platforms, mobile apps, and custom software projects built by SiliconBrains for real business needs.",
+  "/projects",
+);
 
 export default async function ProjectsPage() {
   const projects = await loadOr<Project[]>("projects", () => api.getProjects(), []);

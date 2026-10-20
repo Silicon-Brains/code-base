@@ -78,9 +78,14 @@ blogAdminRouter.post("/", async (req, res) => {
   const parsed = createSchema.safeParse(req.body);
   if (!parsed.success) return invalid(res, parsed.error);
 
+  const isPublished = parsed.data.published ?? false;
   const row = {
     ...parsed.data,
-    published_at: parsed.data.published ? new Date().toISOString() : null,
+    // Keep legacy columns in sync for existing readers and records.
+    author: parsed.data.author_name ?? null,
+    body: parsed.data.content ?? '',
+    status: isPublished ? 'published' : 'draft',
+    published_at: isPublished ? new Date().toISOString() : null,
   };
   const { data, error } = await supabase
     .from("blog_posts")
@@ -109,6 +114,11 @@ blogAdminRouter.patch("/:id", async (req, res) => {
     ...parsed.data,
     updated_at: new Date().toISOString(),
   };
+  if (parsed.data.content !== undefined) patch.body = parsed.data.content;
+  if (parsed.data.author_name !== undefined) patch.author = parsed.data.author_name;
+  if (parsed.data.published !== undefined) {
+    patch.status = parsed.data.published ? 'published' : 'draft';
+  }
   // Stamp the first publish date once; unpublishing keeps it so re-publishing doesn't reorder history.
   if (parsed.data.published === true && !existing.published_at) {
     patch.published_at = new Date().toISOString();

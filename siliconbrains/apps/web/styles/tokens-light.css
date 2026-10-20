@@ -32,3 +32,37 @@
 .theme-light .divide-outline > * + * {
   border-color: rgba(20, 38, 30, 0.08);
 }
+
+/* Dark mode follows a 60/30/10 split: slate foundation, blue-gray surfaces,
+   and restrained steel-blue accents. */
+.theme-dark {
+  --color-background: #10161c;
+  --color-surface: #1a242e;
+  --color-surface-container-low: #18222c;
+  --color-surface-container: #1f2c38;
+  --color-surface-container-high: #293a4a;
+  --color-surface-container-highest: #33475a;
+  --color-on-surface: #e7edf2;
+  --color-on-surface-variant: #b7c6d3;
+  --color-outline: rgba(183, 198, 211, 0.16);
+  --color-outline-strong: rgba(183, 198, 211, 0.34);
+  --color-primary: #8199ae;
+  --color-on-primary: #10161c;
+  --color-primary-container: #33475a;
+  --color-secondary: #b7c6d3;
+  --color-secondary-container: #1f2c38;
+  --color-error: #ffb4ab;
+  --color-on-error: #10161c;
+  color-scheme: dark;
+  transition: background-color 240ms ease, color 240ms ease;
+}
+
+.theme-dark .divide-outline > * + * {
+  border-color: rgba(231, 237, 242, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-dark {
+    transition: none;
+  }
+}

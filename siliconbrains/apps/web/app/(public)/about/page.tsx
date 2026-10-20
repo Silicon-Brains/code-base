@@ -3,8 +3,13 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 import { SectionLabel, IconTile, PageHero, Icon } from "@/components/public/ui";
 import teamPhoto from "@/components/public/images/teamTwo.png";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = { title: "About" };
+export const metadata = pageMetadata(
+  "About SiliconBrains",
+  "Meet SiliconBrains, a software engineering studio building dependable digital products for startups, businesses, and institutions.",
+  "/about",
+);
 
 const STATS = [
   { value: "10+", label: "Projects Delivered" },

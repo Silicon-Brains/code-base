@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 // Wrapping here (not in the root layout) keeps the theme opt-in per route group.
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="theme-light min-h-screen bg-background text-on-surface">
+    <div className="public-theme-root theme-light min-h-screen bg-background text-on-surface">
       <div className="pt-4">
         <Navbar />
       </div>
-      <main>{children}</main>
+      <main className="public-page-enter">{children}</main>
       <Footer />
     </div>
   );

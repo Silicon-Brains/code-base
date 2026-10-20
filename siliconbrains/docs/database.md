@@ -125,6 +125,31 @@ Synced from Clerk via webhook.
 | status | text | `pending` \| `paid` \| `overdue` |
 | issued_date | date |
 | due_date | date |
+| line_items | jsonb | `[{ description, qty, rate }]` |
+| po_ref | text | Optional purchase-order or project reference |
+| discount_percent | numeric | Percentage discount (0–100) |
+| other_charges | numeric | Additional charges |
+| payment_status | text | `unpaid` \| `partial` \| `paid` |
+| billed_to_name / billed_to_company / billed_to_email / billed_to_phone / billed_to_address | text | Billing snapshot captured when issued |
+| bank_account_name / bank_branch / bank_account_no / bank_ifsc_swift | text | Optional bank transfer details printed on PDF |
+| upi_id / cheque_in_favour / payment_link | text | Optional payment methods printed on PDF |
+| late_fee_percent | numeric | Optional monthly late fee percentage |
+
+## Admin workspace tables and extensions
+
+The admin API uses the service-role Supabase client on the Express server. Keep the service-role key out of the web app.
+Apply `006_admin_redesign.sql`, `007_admin_runtime_schema.sql`, and `008_invoice_documents.sql` after the base and portal migrations.
+Apply `009_invoice_number_sequence.sql` after migration 008 to have PostgreSQL assign sequential `SB-INV-####` invoice numbers. The admin form displays that the number will be assigned on save; the server returns the generated number after creation.
+Apply `010_approved_enquiry_clients.sql` to allow an approved enquiry to become a client profile before Clerk registration. When the person later signs up with the same email, the Clerk webhook links their account to that profile.
+
+- `client_projects.status` tracks `ongoing`, `completed`, `planning`, `on_hold`, or `cancelled`.
+- `blog_posts` retains the original `author`, `body`, and `status` fields; migration 007 adds the editor fields
+  (`content`, `author_name`, `published`, `featured`, `tags`, cover image, and SEO description) and backfills existing posts.
+- `site_settings` retains legacy `key`/`value` fields and adds the single settings row and fields edited in Admin → Settings.
+- `team_members`, `message_threads`, `messages`, and `quick_tasks` support the redesigned workspace dashboard.
+- `engagement_messages` is created by `message.sql` and stores client/admin conversations per engagement.
+
+All admin-only tables have RLS enabled without public policies. Requests must pass the Express admin role middleware.
 
 ## RLS policy summary
 - `profiles`: user can `select` own row; service role bypasses for everything else.

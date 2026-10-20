@@ -12,7 +12,7 @@ const STATUS_STYLE: Record<string, string> = {
 const LABEL: Record<string, string> = {
   new: "New",
   contacted: "Contacted",
-  converted: "Converted",
+  converted: "Approved",
   archived: "Archived",
 };
 

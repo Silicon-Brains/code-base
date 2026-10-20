@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import AdminNav from "@/components/admin/AdminNav";
 import AdminTopBar from "@/components/admin/AdminTopBar";
+import AdminPageTransition from "@/components/admin/AdminPageTransition";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -26,7 +27,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <AdminNav />
         <div className="flex min-w-0 flex-1 flex-col">
           <AdminTopBar />
-          <main className="flex-1 px-6 py-6 md:px-8 md:py-8">{children}</main>
+          <main className="flex-1 px-4 py-5 sm:px-6 sm:py-6 md:px-8 md:py-8"><AdminPageTransition>{children}</AdminPageTransition></main>
         </div>
       </div>
     </ClerkProvider>

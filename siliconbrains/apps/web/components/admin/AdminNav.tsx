@@ -8,13 +8,19 @@ import type { ReactNode } from "react";
 const NAV: { label: string; href: string; icon: string }[] = [
   { label: "Dashboard", href: "/admin", icon: "grid" },
   { label: "Enquiries", href: "/admin/leads", icon: "inbox" },
-  { label: "Projects", href: "/admin/engagements", icon: "folder" },
+  { label: "Messages", href: "/admin/messages", icon: "message" },
+  { label: "Clients", href: "/admin/clients", icon: "users" },
+  { label: "Engagements", href: "/admin/engagements", icon: "folder" },
+  { label: "Milestones", href: "/admin/milestones", icon: "check" },
+  { label: "Invoices", href: "/admin/invoices", icon: "receipt" },
+  { label: "Case studies", href: "/admin/projects", icon: "layers" },
   { label: "Services", href: "/admin/services", icon: "cube" },
   { label: "Testimonials", href: "/admin/testimonials", icon: "star" },
+  { label: "FAQs", href: "/admin/faqs", icon: "help" },
+  { label: "Process steps", href: "/admin/process", icon: "flow" },
   { label: "Blog", href: "/admin/blog", icon: "pencil" },
   { label: "Users", href: "/admin/users", icon: "users" },
   { label: "Analytics", href: "/admin/analytics", icon: "chart" },
-  { label: "Messages", href: "/admin/messages", icon: "message" },
   { label: "Settings", href: "/admin/settings", icon: "gear" },
 ];
 
@@ -51,6 +57,11 @@ const ICONS: Record<string, ReactNode> = {
   ),
   chart: <path d="M4 20V4M4 20h16M8 16v-4M13 16V8M18 16v-7" />,
   message: <path d="M21 12a8 8 0 01-11.5 7.2L4 21l1.8-5.5A8 8 0 1121 12z" />,
+  check: <path d="M5 12l4 4L19 6M4 4h5M4 20h16" />,
+  receipt: <><path d="M5 3h14v18l-3-2-4 2-4-2-3 2V3z" /><path d="M8 8h8M8 12h8M8 16h4" /></>,
+  layers: <><path d="M12 3l9 5-9 5-9-5 9-5z" /><path d="M3 12l9 5 9-5M3 16l9 5 9-5" /></>,
+  help: <><circle cx="12" cy="12" r="9" /><path d="M9.5 9a2.5 2.5 0 015 0c0 1.7-2.5 2-2.5 4M12 17h.01" /></>,
+  flow: <><rect x="3" y="3" width="7" height="6" rx="1" /><rect x="14" y="15" width="7" height="6" rx="1" /><path d="M6.5 9v4a3 3 0 003 3H14M17.5 15v-4a3 3 0 00-3-3H10" /></>,
   gear: (
     <>
       <circle cx="12" cy="12" r="3" />
@@ -84,7 +95,7 @@ export default function AdminNav() {
     href === "/admin" ? pathname === "/admin" : pathname?.startsWith(href);
 
   return (
-    <aside className="flex flex-col border-b border-[var(--admin-sidebar-border)] bg-[var(--admin-sidebar-bg)] md:sticky md:top-0 md:h-screen md:w-[232px] md:shrink-0 md:border-b-0 md:border-r">
+    <aside className="admin-sidebar flex flex-col border-b border-[var(--admin-sidebar-border)] bg-[var(--admin-sidebar-bg)] md:sticky md:top-0 md:h-screen md:w-[248px] md:shrink-0 md:border-b-0 md:border-r">
       {/* Logo */}
       <div className="flex items-center gap-2.5 px-5 py-5">
         <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-primary text-on-primary">
@@ -112,7 +123,8 @@ export default function AdminNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 whitespace-nowrap rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+              aria-current={active ? "page" : undefined}
+              className={`admin-nav-link flex items-center gap-3 whitespace-nowrap rounded-lg px-3 py-2 text-[13px] font-medium transition-colors ${
                 active
                   ? "bg-secondary-container text-primary"
                   : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"

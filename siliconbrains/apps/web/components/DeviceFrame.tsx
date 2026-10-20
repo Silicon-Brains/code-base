@@ -4,15 +4,16 @@ import mobileImage from "@/components/public/images/mobilewall.png"
 
 export function LaptopFrame({ children }: { children?: ReactNode }) {
   return (
-<div className="relative w-full">
+<div className="hero-laptop relative w-full">
   <div className="rounded-t-2xl border border-outline bg-surface p-2 shadow-[0_20px_50px_rgba(20,38,30,0.12)]">
     <div className="aspect-[16/10] overflow-hidden rounded-xl bg-surface-container-high">
       {children ?? (
         <img
           src={pcImage.src}
-          alt="Project screenshot"
+          alt="SiliconBrains web application interface displayed on a laptop"
+          fetchPriority="high"
           className="h-full w-full object-cover object-top"
-          loading="lazy"
+          loading="eager"
         />
       )}
     </div>
@@ -30,7 +31,7 @@ export function PhoneFrame({ children }: { children?: ReactNode }) {
           {children ?? (
             <img
           src={mobileImage.src}
-          alt="Project screenshot"
+          alt="SiliconBrains mobile application interface displayed on a smartphone"
           className="h-full w-full object-cover object-top"
           loading="lazy"
         />

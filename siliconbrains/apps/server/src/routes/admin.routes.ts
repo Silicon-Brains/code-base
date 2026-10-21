@@ -125,7 +125,6 @@ const schemas = {
     .strict(),
   invoices: z
     .object({
-      client_project_id: uuid,
       invoice_number: z.string().trim().max(50).optional(),
       amount: z.number().nonnegative().max(1e9),
       currency: z.string().trim().length(3).toUpperCase().optional(),
@@ -350,7 +349,9 @@ adminRouter.patch("/leads/:id", async (req, res) => {
       return res.status(409).json({ error: "This enquiry uses an admin email and cannot be approved as a client." });
     }
 
+    let clientProfileId: string;
     if (existingProfile) {
+      clientProfileId = existingProfile.id;
       const updates: Record<string, unknown> = {};
       if (!existingProfile.source_lead_id) updates.source_lead_id = lead.id;
       if (Object.keys(updates).length > 0) {
@@ -361,7 +362,7 @@ adminRouter.patch("/leads/:id", async (req, res) => {
         if (profileUpdateError) return sendDbError(res, profileUpdateError);
       }
     } else {
-      const { error: profileCreateError } = await supabase
+      const { data: createdProfile, error: profileCreateError } = await supabase
         .from("profiles")
         .upsert({
           source_lead_id: lead.id,
@@ -370,8 +371,34 @@ adminRouter.patch("/leads/:id", async (req, res) => {
           full_name: lead.full_name,
           company_name: lead.organization,
           role: "client",
-        }, { onConflict: "source_lead_id" });
+        }, { onConflict: "source_lead_id" })
+        .select("id")
+        .single();
       if (profileCreateError) return sendDbError(res, profileCreateError);
+      clientProfileId = createdProfile.id;
+    }
+
+    // Approval starts a planning engagement. The title is deterministic so a
+    // retry after a partial failure won't create a second engagement.
+    const engagementTitle = `New engagement — ${lead.organization?.trim() || lead.full_name.trim()}`.slice(0, 200);
+    const { data: existingEngagement, error: engagementLookupError } = await supabase
+      .from("client_projects")
+      .select("id")
+      .eq("client_profile_id", clientProfileId)
+      .eq("title", engagementTitle)
+      .maybeSingle();
+    if (engagementLookupError) return sendDbError(res, engagementLookupError);
+    if (!existingEngagement) {
+      const { error: engagementCreateError } = await supabase
+        .from("client_projects")
+        .insert({
+          client_profile_id: clientProfileId,
+          title: engagementTitle,
+          current_phase: 1,
+          progress_percent: 0,
+          status: "planning",
+        });
+      if (engagementCreateError) return sendDbError(res, engagementCreateError);
     }
   }
 

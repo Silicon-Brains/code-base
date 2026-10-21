@@ -110,7 +110,7 @@ export default function AdminTopBar() {
             <kbd className="hidden rounded border border-outline bg-surface-container-low px-1.5 py-0.5 font-sans text-[10px] sm:inline">⌘ K</kbd>
           </button>
           <span className="hidden h-8 w-px bg-outline sm:block" aria-hidden="true" />
-          <a href="/" target="_blank" rel="noreferrer" className="hidden rounded-lg px-3 py-2 text-xs font-medium text-on-surface-variant transition hover:bg-surface hover:text-on-surface sm:inline-flex">
+          <a href="/" target="_blank" rel="noopener noreferrer" className="hidden rounded-lg px-3 py-2 text-xs font-medium text-on-surface-variant transition hover:bg-surface hover:text-on-surface sm:inline-flex">
             View website
           </a>
         </div>

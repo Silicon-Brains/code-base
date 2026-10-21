@@ -36,7 +36,7 @@ export default function Navbar() {
   }, [open]);
 
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname?.startsWith(href);
+    href === "/" ? pathname === "/" : pathname === href || pathname?.startsWith(`${href}/`);
 
   return (
     <header className="sticky top-0 z-50 mx-auto w-full max-w-container px-4 md:px-10">
@@ -67,6 +67,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={active ? "page" : undefined}
                 className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
                   active
                     ? "text-on-surface"

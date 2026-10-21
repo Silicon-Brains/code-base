@@ -35,7 +35,7 @@ export default function StagingPanel({ deployments }: { deployments: StagingDepl
                   <a
                     href={d.url}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="rounded-md border border-outline px-3 py-1 text-[11px] text-on-surface-variant hover:border-primary/30 hover:text-on-surface"
                   >
                     Open App ↗

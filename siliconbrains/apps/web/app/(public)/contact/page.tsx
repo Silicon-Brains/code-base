@@ -31,13 +31,20 @@ export default async function ContactPage() {
       />
 
       {/* -------------------------------------------- Contact + Form ----- */}
-      <Section className="pt-12">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_1.3fr]">
+      <Section className="pt-8 sm:pt-12">
+        <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] lg:gap-10 xl:gap-14">
           {/* Left: channels */}
           <div className="flex flex-col gap-4">
+            <div className="mb-1">
+              <SectionLabel>Ways to connect</SectionLabel>
+              <h2 className="text-2xl font-bold tracking-tight text-on-surface sm:text-3xl">We’re here to help.</h2>
+              <p className="mt-3 max-w-md text-sm leading-6 text-on-surface-variant">
+                Whether you have a clear brief or an early idea, we’ll help you work out the next step.
+              </p>
+            </div>
             {CHANNELS.map((c) => (
-              <Card key={c.label} className="flex items-start gap-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary-container text-primary">
+              <Card key={c.label} interactive className="group flex min-w-0 items-start gap-4 !p-5 sm:!p-6">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary-container text-primary transition-transform duration-200 group-hover:scale-105">
                   <Icon name={c.icon} />
                 </span>
                 <div className="min-w-0">
@@ -58,9 +65,9 @@ export default async function ContactPage() {
           </div>
 
           {/* Right: form */}
-          <Card>
-            <ContactForm />
-          </Card>
+            <Card className="min-w-0 !p-6 sm:!p-8 lg:!p-10">
+              <ContactForm />
+            </Card>
         </div>
       </Section>
 

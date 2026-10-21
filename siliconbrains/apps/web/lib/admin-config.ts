@@ -193,15 +193,8 @@ export const INVOICES: ResourceConfig = {
   resource: "invoices",
   title: "Invoices",
   noun: "invoice",
-  description: "Invoice records shown in the client portal (client-visible). This tracks status only — there is no payment processing.",
+  description: "Invoice records may stand alone or optionally link to an engagement. Linked invoices are shown in the client portal.",
   fields: [
-    {
-      key: "client_project_id",
-      label: "Engagement",
-      type: "select",
-      required: true,
-      optionsFrom: { resource: "client-projects", label: ["title"] },
-    },
     { key: "invoice_number", label: "Invoice number", type: "text", required: true },
     { key: "amount", label: "Amount", type: "number", required: true },
     { key: "currency", label: "Currency (3 letters)", type: "text", default: "USD" },
@@ -211,7 +204,6 @@ export const INVOICES: ResourceConfig = {
   ],
   columns: [
     { key: "invoice_number", label: "Invoice" },
-    { key: "client_project_id", label: "Engagement", format: "option" },
     { key: "amount", label: "Amount", format: "money", currencyKey: "currency" },
     { key: "status", label: "Status" },
     { key: "due_date", label: "Due", format: "date" },

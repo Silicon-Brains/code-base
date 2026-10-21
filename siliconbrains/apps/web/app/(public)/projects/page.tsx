@@ -54,6 +54,8 @@ export default async function ProjectsPage() {
                           <img
                             src={p.cover_image_url}
                             alt={p.title}
+                            loading="lazy"
+                            decoding="async"
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                           />
                         ) : (
@@ -68,7 +70,13 @@ export default async function ProjectsPage() {
                         {p.summary && <p className="line-clamp-2 text-sm text-on-surface-variant">{p.summary}</p>}
 
                         {p.tech_stack.length > 0 && (
-                          <TechChips items={p.tech_stack.slice(0, 4).map((t) => ({ label: t }))} />
+                          <TechChips
+                            variant="colorful"
+                            items={p.tech_stack
+                              .flatMap((item) => item.split(",").map((label) => label.trim()).filter(Boolean))
+                              .slice(0, 6)
+                              .map((label) => ({ label }))}
+                          />
                         )}
 
                         <div className="mt-auto flex items-center justify-between pt-2">

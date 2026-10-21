@@ -1,4 +1,5 @@
 import Section from "@/components/Section";
+import Image from "next/image";
 import Button from "@/components/Button";
 import Card from "@/components/Card";
 import { SectionLabel, IconTile, PageHero, Icon } from "@/components/public/ui";
@@ -58,14 +59,16 @@ export default function AboutPage() {
       {/* --------------------------------------------- Image band -------- */}
       <Section className="pt-16">
         <div className="relative overflow-hidden rounded-3xl border border-outline bg-surface-container-high">
-          <div className="aspect-[21/9] w-full">
+          <div className="relative aspect-[21/9] w-full">
             <div className="flex h-full w-full items-center justify-center text-[10px] uppercase tracking-widest text-on-surface-variant/50">
-                <img
-                  src={teamPhoto.src}
-                  alt="Project screenshot"
-                  className="h-full w-full object-cover object-top"
-                  loading="lazy"
-                />
+              <Image
+                src={teamPhoto}
+                alt="SiliconBrains team collaborating on a digital product"
+                fill
+                sizes="(max-width: 768px) 100vw, 90vw"
+                quality={82}
+                className="object-cover object-top"
+              />
             </div>
           </div>
         </div>

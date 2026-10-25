@@ -2,6 +2,15 @@ node_modules/
 .next/
 dist/
 .env
-.env.local
+.env.*
+!.env.example
+!.env.*.example
+*.keystore
+*.jks
+keystore.properties
+local.properties
+*.pem
+*.p12
+secrets/
 *.log
 .DS_Store

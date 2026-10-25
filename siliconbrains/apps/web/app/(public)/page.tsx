@@ -5,6 +5,7 @@ import Card from "@/components/Card";
 import TechChips from "@/components/TechChips";
 import { LaptopFrame, PhoneFrame } from "@/components/DeviceFrame";
 import type { Metadata } from "next";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Custom Web & Android App Development",
@@ -18,12 +19,14 @@ export const metadata: Metadata = {
     url: "/",
     type: "website",
     siteName: "SiliconBrains",
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: "SiliconBrains custom software development studio" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Custom Web & Android App Development | SiliconBrains",
     description:
       "Custom web platforms, backend systems, and Android applications designed around your goals.",
+    images: [DEFAULT_OG_IMAGE],
   },
 };
 
@@ -211,7 +214,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col">
       {/* ================= HERO ================= */}
-      <Section className="landing-hero mt-7 pt-12 md:mt-10 md:pt-16">
+      <Section className="landing-hero mt-7 pb-3 pt-12 md:mt-10 md:pb-4 md:pt-16">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.05fr_1fr] lg:items-center">
           <div className="hero-copy-enter">
             <SectionLabel>Software Engineering Studio</SectionLabel>

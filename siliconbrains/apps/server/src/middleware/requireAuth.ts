@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { clerkClient, verifyToken } from "@clerk/clerk-sdk-node";
+import { verifyToken } from "@clerk/backend";
 import { supabase } from "../lib/supabase.js";
 
 export interface AuthedRequest extends Request {
@@ -17,7 +17,10 @@ export async function requireAuth(req: AuthedRequest, res: Response, next: NextF
 
     const payload = await verifyToken(token, {
       secretKey: process.env.CLERK_SECRET_KEY,
-      issuer: null
+      authorizedParties: (process.env.CORS_ORIGIN ?? "http://localhost:3000")
+        .split(",")
+        .map((origin) => origin.trim().replace(/\/+$/, ""))
+        .filter(Boolean),
     });
     const clerkUserId = payload.sub;
     if (!clerkUserId) return res.status(401).json({ error: "Invalid token" });
@@ -34,7 +37,12 @@ export async function requireAuth(req: AuthedRequest, res: Response, next: NextF
     req.profile = profile;
     next();
   } catch (err) {
-    console.error("requireAuth error:", err);
+    console.warn(JSON.stringify({
+      event: "authentication_failed",
+      timestamp: new Date().toISOString(),
+      ip: req.ip,
+      path: req.path,
+    }));
     return res.status(401).json({ error: "Unauthorized" });
   }
 }

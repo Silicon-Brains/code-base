@@ -54,7 +54,7 @@ export const api = {
     request<Faq[]>(`/api/faqs${page ? `?page=${encodeURIComponent(page)}` : ""}`),
   getProcessSteps: () => request<ProcessStep[]>("/api/process-steps"),
   submitLead: (payload: LeadPayload) =>
-    request<{ id: string }>("/api/leads", { method: "POST", body: JSON.stringify(payload) }),
+    request<{ ok: true }>("/api/leads", { method: "POST", body: JSON.stringify(payload) }),
 
   // --- Portal (client, auth required) ---
   portal: {

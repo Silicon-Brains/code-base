@@ -7,7 +7,7 @@ import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import { Icon, SectionLabel } from "@/components/public/ui";
 import { api, ApiError } from "@/lib/api";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, SITE_URL } from "@/lib/seo";
 import type { Project } from "@/lib/types";
 
 export const revalidate = 60;
@@ -33,6 +33,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
 
   const category = project.tag ?? project.category ?? "Case study";
   const technologies = project.tech_stack.flatMap((item) => item.split(",").map((tech) => tech.trim()).filter(Boolean));
+  const projectUrl = `${SITE_URL}/projects/${project.slug}`;
   const technologyColors = [
     "bg-violet-100 text-violet-800 ring-violet-200 hover:bg-violet-200 hover:ring-violet-300",
     "bg-sky-100 text-sky-800 ring-sky-200 hover:bg-sky-200 hover:ring-sky-300",
@@ -46,6 +47,34 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
 
   return (
     <div className="pb-16 sm:pb-24">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "CreativeWork",
+                  "@id": `${projectUrl}#case-study`,
+                  name: project.title,
+                  description: project.summary ?? undefined,
+                  url: projectUrl,
+                  image: project.cover_image_url ?? undefined,
+                  creator: { "@type": "Organization", name: "SiliconBrains", url: SITE_URL },
+                  keywords: technologies.join(", "),
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  itemListElement: [
+                    { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+                    { "@type": "ListItem", position: 2, name: "Projects", item: `${SITE_URL}/projects` },
+                    { "@type": "ListItem", position: 3, name: project.title, item: projectUrl },
+                  ],
+                },
+              ],
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
         <Section className="pt-8 sm:pt-12">
           <nav aria-label="Breadcrumb" className="mb-8 flex min-w-0 items-center gap-2 text-sm text-on-surface-variant">
             <Link href="/projects" className="shrink-0 transition-colors hover:text-primary">Projects</Link>

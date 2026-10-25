@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Privacy & Policy",
-  description:
-    "How SiliconBrains collects, uses, stores, shares and protects personal data.",
-  alternates: { canonical: "/privacy" },
-};
+export const metadata = pageMetadata(
+  "Privacy Policy",
+  "Learn how SiliconBrains collects, uses, stores, shares, and protects personal data when you use our website and services.",
+  "/privacy",
+);
 
 // TODO before launch: replace these two placeholders (Section 16).
 const OFFICER_NAME = "Mohit Shivankar";

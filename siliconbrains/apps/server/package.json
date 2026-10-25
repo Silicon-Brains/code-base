@@ -10,7 +10,7 @@
     "db:seed": "tsx src/scripts/seed.ts"
   },
   "dependencies": {
-    "@clerk/clerk-sdk-node": "^4.12.12",
+    "@clerk/backend": "^1.14.1",
     "@siliconbrains/server": "file:",
     "@supabase/supabase-js": "^2.45.0",
     "cors": "^2.8.5",

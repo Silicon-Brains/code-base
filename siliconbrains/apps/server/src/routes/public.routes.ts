@@ -1,13 +1,20 @@
-import { Router } from "express";
+import { Router, type Response } from "express";
 import { z } from "zod";
 import { supabase } from "../lib/supabase.js";
 import { rateLimit } from "../middleware/rateLimit.js";
 
 export const publicRouter = Router();
 
-// Unauthenticated + unrelated to any per-user quota, so this is the one public endpoint that
-// needs its own abuse guard (Phase 7 carry-over). 5 submissions / 10 minutes / IP is generous for
-// a real prospect filling the form once, tight enough to blunt scripted spam.
+function databaseFailure(res: Response, context: string, error: unknown) {
+  const code = typeof error === "object" && error !== null && "code" in error
+    ? (error as { code: unknown }).code
+    : undefined;
+  console.error(`[public/${context}] database request failed`, { code });
+  return res.status(500).json({ error: "Something went wrong. Please try again." });
+}
+
+// The global API limiter is complemented by a stricter contact-form limit: 5 submissions per
+// 10 minutes per IP is generous for real prospects and helps blunt scripted spam.
 const leadsRateLimit = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 5,
@@ -22,7 +29,7 @@ publicRouter.get("/services", async (_req, res) => {
     .select("*")
     .eq("published", true)
     .order("sort_order", { ascending: true });
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseFailure(res, "services", error);
   res.json(data);
 });
 
@@ -32,7 +39,7 @@ publicRouter.get("/projects", async (_req, res) => {
     .select("*")
     .eq("published", true)
     .order("sort_order", { ascending: true });
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseFailure(res, "projects", error);
   res.json(data);
 });
 
@@ -53,7 +60,7 @@ publicRouter.get("/testimonials", async (_req, res) => {
     .select("*")
     .eq("published", true)
     .order("created_at", { ascending: false });
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseFailure(res, "testimonials", error);
   res.json(data);
 });
 
@@ -61,7 +68,7 @@ publicRouter.get("/faqs", async (req, res) => {
   let query = supabase.from("faqs").select("*").order("sort_order", { ascending: true });
   if (req.query.page) query = query.eq("page", String(req.query.page));
   const { data, error } = await query;
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseFailure(res, "faqs", error);
   res.json(data);
 });
 
@@ -70,7 +77,7 @@ publicRouter.get("/process-steps", async (_req, res) => {
     .from("process_steps")
     .select("*")
     .order("phase_number", { ascending: true });
-  if (error) return res.status(500).json({ error: error.message });
+  if (error) return databaseFailure(res, "process-steps", error);
   res.json(data);
 });
 
@@ -93,7 +100,7 @@ publicRouter.post("/leads", leadsRateLimit, async (req, res) => {
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid submission", details: parsed.error.flatten() });
   }
-  const { data, error } = await supabase.from("leads").insert(parsed.data).select().single();
-  if (error) return res.status(500).json({ error: error.message });
-  res.status(201).json(data);
+  const { error } = await supabase.from("leads").insert(parsed.data);
+  if (error) return databaseFailure(res, "leads", error);
+  res.status(201).json({ ok: true });
 });

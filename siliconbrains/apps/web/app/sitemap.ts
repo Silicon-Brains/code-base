@@ -10,13 +10,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // If the API is down (e.g. at build time) we still emit the static routes.
   const projects = await api.getProjects().catch(() => []);
 
+  const isProduction = process.env.VERCEL_ENV
+    ? process.env.VERCEL_ENV === "production"
+    : process.env.NODE_ENV === "production";
   return [
     ...STATIC_PATHS.map((path) => ({
       url: `${SITE_URL}${path}`,
       changeFrequency: "monthly" as const,
       priority: path === "/" ? 1 : 0.8,
     })),
-    ...projects.map((p) => ({
+    ...(isProduction ? projects : []).map((p) => ({
       url: `${SITE_URL}/projects/${p.slug}`,
       changeFrequency: "monthly" as const,
       priority: 0.6,

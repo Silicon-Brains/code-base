@@ -50,7 +50,7 @@ const SOCIALS = [
 export default function Footer() {
   return (
     <footer className="mx-auto mt-24 w-full max-w-container px-4 pb-10 md:px-10">
-      <div className="grid grid-cols-1 gap-10 border-t border-outline pt-10 md:grid-cols-[2fr_auto_auto]">
+      <div className="grid grid-cols-1 gap-10 border-t border-outline pt-10 md:grid-cols-[2fr_auto_auto_auto]">
         <div>
           <div className="mb-3 flex items-center gap-2.5">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-on-primary">
@@ -85,6 +85,34 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+          </ul>
+        </div>
+
+        <div>
+          <p className="mb-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-on-surface-variant">
+            Legal
+          </p>
+          <ul className="flex flex-col gap-2.5">
+            <li>
+              <Link href="/privacy" className="text-sm text-on-surface-variant transition-colors hover:text-primary">
+                Privacy &amp; Policy
+              </Link>
+            </li>
+            <li>
+              <a href="/LICENSE.md" className="text-sm text-on-surface-variant transition-colors hover:text-primary">
+                Terms of Use
+              </a>
+            </li>
+            <li>
+              <a href="/LICENSE.md" className="text-sm text-on-surface-variant transition-colors hover:text-primary">
+                Terms and Conditions
+              </a>
+            </li>
+            <li>
+              <a href="/LICENSE.md" className="text-sm text-on-surface-variant transition-colors hover:text-primary">
+                LICENSE
+              </a>
+            </li>
           </ul>
         </div>
 

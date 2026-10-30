@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { DEFAULT_OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ["latin"],
+const plusJakarta = localFont({
+  src: "./fonts/PlusJakartaSans[wght].ttf",
   variable: "--font-plus-jakarta",
-  weight: ["400", "500", "600", "700"],
+  weight: "400 700",
 });
 
 export const metadata: Metadata = {
@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   category: "technology",
   keywords: [
     "SiliconBrains",
-    "silicon brains nagpur",
-    "silicon brains india",
+    "siliconbrains nagpur",
+    "siliconbrains india",
     "mohit shivankar",
     "mr.slicon",
     "Siliconbrains Softwares",
@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         name: "SiliconBrains",
         url: SITE_URL,
         description: SITE_DESCRIPTION,
-        email: "engineering@siliconbrains.com",
+        email: "contact@siliconbrains.in",
       },
       {
         "@type": "WebSite",

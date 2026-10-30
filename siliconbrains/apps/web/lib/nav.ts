@@ -8,7 +8,7 @@ export const NAV_LINKS = [
 ];
 
 export const FOOTER_CONNECT = [
-  { label: "GitHub", href: "https://github.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "Instagram", href: "https://instagram.com" },
+  { label: "GitHub", href: "https://www.github.com/mr-d-luffy/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/mohit-shivankar-a87964340/" },
+  { label: "Instagram", href: "https://www.instagram.com/siliconbrains.in/" },
 ];
